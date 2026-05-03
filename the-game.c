@@ -1,9 +1,18 @@
 
 #include <ncurses.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define WIDTH 20
 #define HEIGHT 20
+
+int food_x;
+int food_y;
+
+void spawn_food(){
+    food_x = (rand() % (WIDTH - 2) + 1);
+    food_y = (rand() % (HEIGHT - 2)) + 1);
+}
 
 void handle_input(int *x, int *y) {
     int ch = getch();
@@ -28,17 +37,22 @@ void print(int x, int y){
     }
     for(int i = 0; i< HEIGHT; i++){
         mvprintw(i, 0, "#");
-        mvprintw(i, WIDTH - 1, "#")
+        mvprintw(i, WIDTH - 1, "#");
     }
 
     mvprintw(y, x, "0");
 
+    mvprintw(food_y, ood_x, "*");
+
     refresh();
 }
 
-int main (){
+int main(){
     int x = WIDTH / 2;
     int y = HEIGHT / 2;
+
+    srand(time(NULL));
+    spawn_food();
 
     intiscr();
     neocho();
