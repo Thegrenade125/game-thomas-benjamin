@@ -82,7 +82,7 @@ int show_game_over_screen(int score){
     }
 }
 
-void reset_game(int *x, int *y, int *dx, int *dy){
+void reset_game(int *x, int *y){
     *x = WIDTH / 2;
     *y = HEIGHT / 2;
     snake_length = 1;
@@ -103,8 +103,13 @@ int main(){
     curs_set(FALSE);
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
-
+    
     while(1){
+
+        reset_game(&x, &y);
+        show_start_screen();
+        int game_over = 0;
+        while(!game_over){
         handle_input(&x, &y);
         //moves the body with the head
         for(int i = snake_length - 1; i > 0; i--) {
@@ -137,11 +142,10 @@ int main(){
             draw(x, y);
             napms(150); 
         }
-
+    }
         if(!show_game_over_screen(snake_length - 1))
             break;
-    }
-
+}
     
     
     endwin();
