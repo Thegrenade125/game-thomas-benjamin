@@ -83,18 +83,17 @@ int main(){
         
         snake_x[0] = x;
         snake_y[0] = y;
-        
-        print(x, y);
 
         //ends game after hitting the wall (still needs to check for hitting itself)
         if (x <= 0 || x >= WIDTH-1 || y <= 0 || y >= HEIGHT-1)
             break;
-    }
-        
-        napms(100);
-
-
-        
+        for(int i = 1; i < snake_length; i++){
+            if(x == snake_x[i] && y == snake_y[i]){
+                break;
+            }
+        }
+        print(x, y);
+        napms(100); 
     }
 
     endwin();
