@@ -19,16 +19,24 @@ void spawn_food(){
     food_y = (rand() % (HEIGHT - 2) + 1);
 }
 
-void handle_input(int *x, int *y) {
+void handle_input(int *dx, int *dy) {
     int ch = getch();
     switch (ch) {
-            case KEY_UP:    (*y)--; 
+            case KEY_UP:    
+                *dx = 0;
+                *dy = -1;
             break;
-            case KEY_DOWN:  (*y)++; 
+            case KEY_DOWN:  
+                *dx = 0;
+                *dy = 1;
             break;
-            case KEY_LEFT:  (*x)--; 
+            case KEY_LEFT:  
+                *dx = -1;
+                *dy = 0;
             break;
-            case KEY_RIGHT: (*x)++; 
+            case KEY_RIGHT: 
+                *dx = 1;
+                *dy = 0;
             break;
     }
 }
@@ -82,10 +90,12 @@ int show_game_over_screen(int score){
     }
 }
 
-void reset_game(int *x, int *y){
+void reset_game(int *x, int *y, int *dx, int *dy){
     *x = WIDTH / 2;
     *y = HEIGHT / 2;
     snake_length = 1;
+    *dx = 0;
+    *dy = 0;
     snake_x[0] = *x;
     snake_y[0] = *y;
     spawn_food();
@@ -94,6 +104,8 @@ void reset_game(int *x, int *y){
 int main(){
     int x = WIDTH / 2;
     int y = HEIGHT / 2;
+    int dx = 0;
+    int dy = 0;
 
     srand(time(NULL));
     spawn_food();
@@ -106,11 +118,13 @@ int main(){
     
     while(1){
 
-        reset_game(&x, &y);
+        reset_game(&x, &y, &dx, &dy);
         show_start_screen();
         int game_over = 0;
         while(!game_over){
-        handle_input(&x, &y);
+        handle_input(&dx, &dy);
+        x += dx;
+        y += dy;
         //moves the body with the head
         for(int i = snake_length - 1; i > 0; i--) {
             snake_x[i] = snake_x[i-1];
